@@ -1,14 +1,17 @@
-'use client'
+'use client';
 
-import { CacheProvider } from '@chakra-ui/next-js'
-import { ChakraProvider } from '@chakra-ui/react'
+import { CacheProvider } from '@chakra-ui/next-js';
+import { ChakraProvider } from '@chakra-ui/react';
+import { ReactNode } from 'react';
 
-export function Providers({ children }: { children: React.ReactNode }) {
+/**
+ * Necessary to ensure that computed styles are included in the initial server payload (during streaming)
+ * @param children
+ */
+export function Providers({ children }: { children: ReactNode }) {
   return (
     <CacheProvider>
-      <ChakraProvider>
-        {children}
-      </ChakraProvider>
+      <ChakraProvider>{children}</ChakraProvider>
     </CacheProvider>
-  )
+  );
 }

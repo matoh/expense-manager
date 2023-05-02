@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
-import { Providers } from '@/app/providers';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import BaseLayout from './(BaseLayout)/BaseLayout';
+import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,7 +14,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <BaseLayout>{children}</BaseLayout>
+        </Providers>
       </body>
     </html>
   );

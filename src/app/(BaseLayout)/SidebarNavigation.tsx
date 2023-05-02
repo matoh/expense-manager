@@ -7,13 +7,14 @@ import NavigationItem from './NavigationItem';
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  link: string;
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Expenses', icon: FiList },
-  { name: 'Reports', icon: FiTrendingUp },
-  { name: 'Settings', icon: FiSettings },
+  { name: 'Home', icon: FiHome, link: '/' },
+  { name: 'Expenses', icon: FiList, link: 'expenses' },
+  { name: 'Reports', icon: FiTrendingUp, link: 'reports' },
+  { name: 'Settings', icon: FiSettings, link: 'settings' }
 ];
 
 interface SidebarNavigationProps extends BoxProps {
@@ -38,9 +39,9 @@ export default function SidebarNavigation({ onClose, ...rest }: SidebarNavigatio
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavigationItem key={link.name} icon={link.icon}>
-          {link.name}
+      {LinkItems.map((linkItem) => (
+        <NavigationItem key={linkItem.name} icon={linkItem.icon} link={linkItem.link}>
+          {linkItem.name}
         </NavigationItem>
       ))}
     </Box>

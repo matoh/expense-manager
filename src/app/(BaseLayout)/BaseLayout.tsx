@@ -23,7 +23,7 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
         <DrawerContent>{<SidebarNavigation onClose={onClose} />}</DrawerContent>
       </Drawer>
       <HeaderNavigation onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 64 }} p='4'>
+      <Box ml={{ base: '0', md: '64' }} p='4'>
         {children}
       </Box>
     </Box>

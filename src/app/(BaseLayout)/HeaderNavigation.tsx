@@ -23,8 +23,8 @@ interface HeaderNavigationProps extends FlexProps {
 export default function HeaderNavigation({ onOpen, ...rest }: HeaderNavigationProps): ReactElement {
   return (
     <Flex
-      ml={{ base: 0, md: 64 }}
-      px={{ base: 4, md: 4 }}
+      ml={{ base: '0', md: '64' }}
+      px={{ base: '4', md: '4' }}
       height='20'
       alignItems='center'
       bg={useColorModeValue('white', 'gray.900')}
@@ -42,7 +42,7 @@ export default function HeaderNavigation({ onOpen, ...rest }: HeaderNavigationPr
         <IconButton size='lg' variant='ghost' aria-label='open menu' icon={<FiBell />} />
         <Flex alignItems={'center'}>
           <Menu>
-            <MenuButton py={2} transition='all 0.3s' _focus={{ boxShadow: 'none' }}>
+            <MenuButton py='2' transition='all 0.3s' _focus={{ boxShadow: 'none' }}>
               <HStack>
                 <VStack display={{ base: 'none', md: 'flex' }} alignItems='flex-start' spacing='1px' ml='2'>
                   <Text fontSize='sm'>John Doe</Text>

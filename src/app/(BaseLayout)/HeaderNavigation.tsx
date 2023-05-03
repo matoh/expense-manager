@@ -10,6 +10,7 @@ import {
   MenuItem,
   MenuList,
   Text,
+  useColorMode,
   useColorModeValue,
   VStack
 } from '@chakra-ui/react';
@@ -21,6 +22,8 @@ interface HeaderNavigationProps extends FlexProps {
 }
 
 export default function HeaderNavigation({ onOpen, ...rest }: HeaderNavigationProps): ReactElement {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <Flex
       ml={{ base: '0', md: '64' }}
@@ -57,6 +60,7 @@ export default function HeaderNavigation({ onOpen, ...rest }: HeaderNavigationPr
             </MenuButton>
             <MenuList bg={useColorModeValue('white', 'gray.900')} borderColor={useColorModeValue('gray.200', 'gray.700')}>
               <MenuItem>Profile</MenuItem>
+              <MenuItem onClick={() => toggleColorMode()}>{colorMode === 'light' ? 'Dark mode (Beta)' : 'Light mode'}</MenuItem>
               <MenuDivider />
               <MenuItem>Sign out</MenuItem>
             </MenuList>

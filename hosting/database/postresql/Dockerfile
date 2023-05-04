@@ -5,6 +5,4 @@ RUN apt-get update && \
     postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR \
     postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR-scripts
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod 0755 /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["postgres"]

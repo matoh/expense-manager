@@ -2,19 +2,18 @@ version: "3.9"
 services:
   expense-manager-app:
     build:
-      dockerfile: ./hosting/app-nextjs/Dockerfile
+      dockerfile: hosting/app/Dockerfile
     network_mode: host
     volumes:
-      - ./web-portal/src:/app/src
-      - ./web-portal/public:/app/public
+      - ./src:/app/src
+      - ./public:/app/public
     environment:
       PORT: 3000
   postgresql:
-    build: ./hosting/postgresql/database
+    build: hosting/database/postresql
     network_mode: host
     volumes:
       - postgresql-volume:/var/lib/postgresql/data
-      - ./hosting/postgresql/database/certificate:/certificate
     environment:
       POSTGRES_DB: expense_manager
       POSTGRES_PASSWORD: password
@@ -22,7 +21,7 @@ services:
   postgresql-adminer:
     depends_on:
       - postgresql
-    build: ./hosting/postgresql/adminer
+    build: hosting/database/adminer
     network_mode: host
     environment:
       POSTGRES_HOST: localhost

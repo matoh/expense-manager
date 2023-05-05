@@ -6,7 +6,7 @@ import { migrateOneUp } from '../../../../db/migrations/MigrationHelper';
  * @param request
  */
 export async function GET(request: Request) {
-  void migrateOneUp();
+  const results = await migrateOneUp();
 
-  return NextResponse.json({ status: 'OK' });
+  return NextResponse.json({ status: results });
 }

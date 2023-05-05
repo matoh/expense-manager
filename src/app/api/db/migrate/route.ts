@@ -6,7 +6,7 @@ import { migrateToLatest } from '../../../db/migrations/MigrationHelper';
  * @param request
  */
 export async function GET(request: Request) {
-  void migrateToLatest();
+  const results = await migrateToLatest();
 
-  return NextResponse.json({ status: 'OK' });
+  return NextResponse.json({ status: results });
 }

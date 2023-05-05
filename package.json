@@ -16,14 +16,19 @@
     "@types/node": "18.16.3",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
+    "dayjs": "^1.11.7",
     "framer-motion": "^10.12.4",
-    "next": "13.3.1",
+    "kysely": "^0.24.2",
+    "next": "13.4.0",
+    "pg": "^8.10.0",
+    "prettier-plugin-organize-imports": "^3.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@types/pg": "^8.6.6",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
     "prettier": "^2.8.8"

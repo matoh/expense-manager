@@ -14,5 +14,8 @@ RUN npm install
 # Copy the rest of the application's code to the working directory
 COPY / .
 
+# Generate DB schemas
+CMD ./node_modules/.bin/kysely-codegen
+
 # Run the application
 CMD ./node_modules/.bin/next

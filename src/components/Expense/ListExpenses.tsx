@@ -1,19 +1,25 @@
 'use client';
 
-import { Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { Selectable } from 'kysely';
 import { Expense } from 'kysely-codegen/dist/db';
+import CreateExpenseModal from './CreateExpenseModal';
 
 interface ListExpensesProps {
   expenses: Selectable<Expense>[];
 }
 
 export default function ListExpenses({ expenses }: ListExpensesProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
       <Box mb='2' textAlign='right'>
-        <Button colorScheme='teal'>Create</Button>
+        <Button colorScheme='teal' onClick={onOpen}>
+          Create
+        </Button>
+        <CreateExpenseModal isOpen={isOpen} onClose={onClose} />
       </Box>
       <TableContainer bgColor='white' borderRadius='lg'>
         <Table>

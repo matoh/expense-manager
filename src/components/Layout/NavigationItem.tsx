@@ -19,7 +19,7 @@ export default function NavigationItem({ icon, link, children, ...rest }: Naviga
         role='group'
         cursor='pointer'
         _hover={{
-          bg: 'gray.600',
+          bg: 'teal.500',
           color: 'white'
         }}
         {...rest}

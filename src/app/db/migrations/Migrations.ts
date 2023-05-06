@@ -34,19 +34,21 @@ async function migrate(direction: 'up' | 'down' | 'latest') {
 }
 
 const migrations = {
-  '2023_05_05_create_user_table': {
+  '2023_05_05_create_expense_table': {
     async up(db: Kysely<any>): Promise<void> {
       await db.schema
-        .createTable('user')
-        .addColumn('user_id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
-        .addColumn('first_name', 'text')
-        .addColumn('last_name', 'text')
-        .addColumn('email', 'text', (col) => col.unique())
+        .createTable('expense')
+        .addColumn('id', 'serial', (col) => col.primaryKey())
+        .addColumn('merchant', 'text', (col) => col.notNull())
+        .addColumn('description', 'text')
+        .addColumn('category', 'text', (col) => col.notNull())
+        .addColumn('cost_sek', 'float4', (col) => col.notNull())
+        .addColumn('cost_eur', 'float4', (col) => col.notNull())
         .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`NOW()`))
         .execute();
     },
     async down(db: Kysely<any>): Promise<void> {
-      await db.schema.dropTable('user').execute();
+      await db.schema.dropTable('expense').execute();
     }
   }
 };

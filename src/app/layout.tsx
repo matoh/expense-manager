@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import React, { ReactNode } from 'react';
-import BaseLayout from './(BaseLayout)/BaseLayout';
+import BaseLayout from '../components/Layout/BaseLayout';
 import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });

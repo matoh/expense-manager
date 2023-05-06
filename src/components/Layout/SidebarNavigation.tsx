@@ -12,9 +12,9 @@ interface LinkItemProps {
 
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, link: '/' },
-  { name: 'Expenses', icon: FiList, link: 'expenses' },
-  { name: 'Reports', icon: FiTrendingUp, link: 'reports' },
-  { name: 'Settings', icon: FiSettings, link: 'settings' }
+  { name: 'Expenses', icon: FiList, link: 'expense' },
+  { name: 'Reports', icon: FiTrendingUp, link: 'report' },
+  { name: 'Settings', icon: FiSettings, link: 'setting' }
 ];
 
 interface SidebarNavigationProps extends BoxProps {

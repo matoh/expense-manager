@@ -9,7 +9,7 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH='100vh' bgColor={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarNavigation onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
       <Drawer
         autoFocus={false}

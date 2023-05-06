@@ -43,7 +43,7 @@ export default function HeaderNavigation({ onOpen, ...rest }: HeaderNavigationPr
 
       <HStack spacing={{ base: '0', md: '6' }}>
         <IconButton size='lg' variant='ghost' aria-label='open menu' icon={<FiBell />} />
-        <Flex alignItems={'center'}>
+        <Flex alignItems='center'>
           <Menu>
             <MenuButton py='2' transition='all 0.3s' _focus={{ boxShadow: 'none' }}>
               <HStack>

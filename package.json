@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate-types": "kysely-codegen"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.1.3",
@@ -31,6 +32,7 @@
     "@types/pg": "^8.6.6",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
+    "kysely-codegen": "^0.10.0",
     "prettier": "^2.8.8"
   }
 }

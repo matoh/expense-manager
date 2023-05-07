@@ -15,6 +15,7 @@ import {
   Select,
   Stack
 } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 interface CreateExpenseModalProps {
@@ -28,15 +29,17 @@ export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseMod
     register,
     formState: { isSubmitting }
   } = useForm();
+  const router = useRouter();
 
-  async function onSubmit(values: any) {
-    console.log('Values: ', values);
-    const response = await fetch('/api/expense', {
+  async function createExpense(values: any) {
+    await fetch('/api/expense', {
       method: 'POST',
       headers: new Headers({ 'content-type': 'application/json' }),
       body: JSON.stringify(values)
     });
-    console.log('response', response);
+
+    router.refresh();
+    onClose();
   }
 
   return (
@@ -45,7 +48,7 @@ export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseMod
       <ModalContent bgColor='gray.50'>
         <ModalHeader>New Expense</ModalHeader>
         <ModalCloseButton />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(createExpense)}>
           <ModalBody>
             <Card p='4'>
               <Stack spacing='4'>
@@ -64,6 +67,10 @@ export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseMod
                 <FormControl isRequired>
                   <FormLabel>Price in SEK</FormLabel>
                   <Input type='number' defaultValue={123} isRequired {...register('cost_sek')} />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Price in EUR</FormLabel>
+                  <Input type='number' defaultValue={345} isRequired {...register('cost_eur')} />
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel>Date</FormLabel>

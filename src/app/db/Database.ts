@@ -14,7 +14,14 @@ function kyselyConnection() {
         pool: new Pool({
           connectionString: process.env.DATABASE_URL
         })
-      })
+      }),
+      // Custom logger for outputting executed SQL queries
+      log(event) {
+        if (event.level === 'query') {
+          console.log(event.query.sql);
+          console.log(event.query.parameters);
+        }
+      }
     });
   }
 

@@ -1,9 +1,31 @@
 'use client';
 
-import { Box, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  HStack,
+  IconButton,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverFooter,
+  PopoverHeader,
+  PopoverTrigger,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure
+} from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { Selectable } from 'kysely';
 import { Expense } from 'kysely-codegen/dist/db';
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import CreateExpenseModal from './CreateExpenseModal';
 
 interface ListExpensesProps {
@@ -12,6 +34,7 @@ interface ListExpensesProps {
 
 export default function ListExpenses({ expenses }: ListExpensesProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isDeletePopoverOpen, onOpen: onDeletePopoverOpen, onClose: onDeletePopoverClose } = useDisclosure();
 
   return (
     <>
@@ -29,6 +52,7 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
               <Th>Category</Th>
               <Th>Date</Th>
               <Th isNumeric>Amount (SEK)</Th>
+              <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -38,6 +62,37 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
                 <Td>{expense.category}</Td>
                 <Td>{dayjs(expense.created_at).format('YYYY/MM/DD')}</Td>
                 <Td isNumeric>{expense.cost_sek}</Td>
+                <Td>
+                  <HStack>
+                    <IconButton icon={<AiFillEdit />} aria-label='Edit expense' />
+                    <Popover isLazy>
+                      {({ onClose }) => (
+                        <>
+                          <PopoverTrigger>
+                            <IconButton icon={<AiFillDelete />} aria-label='Delete expense' />
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <PopoverArrow />
+                            <PopoverHeader>Delete expense!</PopoverHeader>
+                            <PopoverBody>
+                              <Text whiteSpace='normal'>Are you sure you want to delete an expense?</Text>
+                            </PopoverBody>
+                            <PopoverFooter>
+                              <HStack width='full'>
+                                <Button width='full' variant='ghost' onClick={onClose}>
+                                  Close
+                                </Button>
+                                <Button width='full' colorScheme='teal'>
+                                  Delete
+                                </Button>
+                              </HStack>
+                            </PopoverFooter>
+                          </PopoverContent>
+                        </>
+                      )}
+                    </Popover>
+                  </HStack>
+                </Td>
               </Tr>
             ))}
           </Tbody>

@@ -1,13 +1,23 @@
 import { NextResponse } from 'next/server';
+import { kyselyConnection } from '../../db/Database';
 
 /**
- * Store expense into database
+ * Create expense record
  * @param request
  */
 export async function POST(request: Request) {
   const formData = await request.json();
 
-  // TODO: Store data
+  const db = kyselyConnection();
+  const createdExpense = await db.insertInto('expense').values(formData).returningAll().execute();
 
-  return NextResponse.json({ status: formData });
+  return NextResponse.json({ status: 'success', data: createdExpense });
+}
+
+/**
+ * Delete expense record
+ * @param request
+ */
+export async function DELETE(request: Request) {
+  return NextResponse.json({ status: 'success' });
 }

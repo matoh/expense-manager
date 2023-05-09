@@ -27,16 +27,20 @@ import dayjs from 'dayjs';
 import { Selectable } from 'kysely';
 import { Expense } from 'kysely-codegen/dist/db';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { deleteExpense } from '../../api/ExpenseApi';
 import CreateExpenseModal from './CreateExpenseModal';
+import EditExpenseModal from './EditExpenseModal';
 
 interface ListExpensesProps {
   expenses: Selectable<Expense>[];
 }
 
 export default function ListExpenses({ expenses }: ListExpensesProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedExpense, setSelectedExpense] = useState<Selectable<Expense>>();
+  const { isOpen: isOpenCreateExpense, onOpen: onOpenCreateExpense, onClose: onCloseCreateExpense } = useDisclosure();
+  const { isOpen: isOpenEditExpense, onOpen: onOpenEditExpense, onClose: onCloseEditExpense } = useDisclosure();
   const router = useRouter();
   const notification = useToast();
 
@@ -52,10 +56,10 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
   return (
     <>
       <Box mb='2' textAlign='right'>
-        <Button colorScheme='teal' onClick={onOpen}>
+        <Button colorScheme='teal' onClick={onOpenCreateExpense}>
           Create
         </Button>
-        <CreateExpenseModal isOpen={isOpen} onClose={onClose} />
+        <CreateExpenseModal isOpen={isOpenCreateExpense} onClose={onCloseCreateExpense} />
       </Box>
       <TableContainer bgColor='white' borderRadius='lg'>
         <Table>
@@ -76,7 +80,15 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
                 <Td>{dayjs(expense.created_at).format('YYYY/MM/DD')}</Td>
                 <Td isNumeric>{expense.cost_sek}</Td>
                 <Td>
-                  <IconButton icon={<AiFillEdit />} aria-label='Edit expense' mr='2' />
+                  <IconButton
+                    onClick={() => {
+                      onOpenEditExpense();
+                      setSelectedExpense(expense);
+                    }}
+                    icon={<AiFillEdit />}
+                    aria-label='Edit expense'
+                    mr='2'
+                  />
                   <Popover isLazy placement='left'>
                     {({ onClose }) => (
                       <>
@@ -109,6 +121,19 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
           </Tbody>
         </Table>
       </TableContainer>
+      {selectedExpense && (
+        <EditExpenseModal
+          expense={selectedExpense}
+          isOpen={isOpenEditExpense}
+          onClose={() => {
+            onCloseEditExpense();
+            // Delay unmounting modal for triggering close modal transition
+            setTimeout(() => {
+              setSelectedExpense(undefined);
+            }, 75);
+          }}
+        />
+      )}
     </>
   );
 }

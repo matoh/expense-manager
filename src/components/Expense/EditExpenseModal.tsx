@@ -16,21 +16,26 @@ import {
   Stack,
   useToast
 } from '@chakra-ui/react';
+import { Selectable } from 'kysely';
+import { Expense } from 'kysely-codegen/dist/db';
 import { useRouter } from 'next/navigation';
 import { FieldValues, useForm } from 'react-hook-form';
-import { createExpense, deleteExpense } from '../../api/ExpenseApi';
+import { createExpense } from '../../api/ExpenseApi';
 
-interface CreateExpenseModalProps {
+interface EditExpenseModalProps {
+  expense: Selectable<Expense>;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseModalProps) {
+export default function EditExpenseModal({ expense, isOpen, onClose }: EditExpenseModalProps) {
   const {
     handleSubmit,
     register,
     formState: { isSubmitting }
-  } = useForm();
+  } = useForm({
+    defaultValues: expense
+  });
   const router = useRouter();
   const notification = useToast();
 

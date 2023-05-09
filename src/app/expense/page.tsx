@@ -8,7 +8,7 @@ export const metadata = {
 export default async function ExpensePage() {
   const db = kyselyConnection();
 
-  const expenses = await db.selectFrom('expense').selectAll().execute();
+  const expenses = await db.selectFrom('expense').selectAll().orderBy('id', 'desc').execute();
 
   return (
     <main>

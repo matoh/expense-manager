@@ -11,7 +11,9 @@ import { ReactNode } from 'react';
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <CacheProvider>
-      <ChakraProvider>{children}</ChakraProvider>
+      <ChakraProvider toastOptions={{ defaultOptions: { position: 'top', status: 'success', isClosable: true } }}>
+        {children}
+      </ChakraProvider>
     </CacheProvider>
   );
 }

@@ -20,12 +20,15 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { Selectable } from 'kysely';
 import { Expense } from 'kysely-codegen/dist/db';
+import { useRouter } from 'next/navigation';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { deleteExpense } from '../../api/ExpenseApi';
 import CreateExpenseModal from './CreateExpenseModal';
 
 interface ListExpensesProps {
@@ -34,7 +37,17 @@ interface ListExpensesProps {
 
 export default function ListExpenses({ expenses }: ListExpensesProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isDeletePopoverOpen, onOpen: onDeletePopoverOpen, onClose: onDeletePopoverClose } = useDisclosure();
+  const router = useRouter();
+  const notification = useToast();
+
+  const handleDeleteExpense = (expenseId: number) =>
+    deleteExpense({
+      expenseId,
+      onSuccess: () => {
+        notification({ title: 'Successfully removed expense' });
+        router.refresh();
+      }
+    });
 
   return (
     <>
@@ -63,35 +76,33 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
                 <Td>{dayjs(expense.created_at).format('YYYY/MM/DD')}</Td>
                 <Td isNumeric>{expense.cost_sek}</Td>
                 <Td>
-                  <HStack>
-                    <IconButton icon={<AiFillEdit />} aria-label='Edit expense' />
-                    <Popover isLazy>
-                      {({ onClose }) => (
-                        <>
-                          <PopoverTrigger>
-                            <IconButton icon={<AiFillDelete />} aria-label='Delete expense' />
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverHeader>Delete expense!</PopoverHeader>
-                            <PopoverBody>
-                              <Text whiteSpace='normal'>Are you sure you want to delete an expense?</Text>
-                            </PopoverBody>
-                            <PopoverFooter>
-                              <HStack width='full'>
-                                <Button width='full' variant='ghost' onClick={onClose}>
-                                  Close
-                                </Button>
-                                <Button width='full' colorScheme='teal'>
-                                  Delete
-                                </Button>
-                              </HStack>
-                            </PopoverFooter>
-                          </PopoverContent>
-                        </>
-                      )}
-                    </Popover>
-                  </HStack>
+                  <IconButton icon={<AiFillEdit />} aria-label='Edit expense' mr='2' />
+                  <Popover isLazy placement='left'>
+                    {({ onClose }) => (
+                      <>
+                        <PopoverTrigger>
+                          <IconButton icon={<AiFillDelete />} aria-label='Delete expense' />
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverHeader>Delete expense!</PopoverHeader>
+                          <PopoverBody>
+                            <Text whiteSpace='normal'>Are you sure you want to delete an expense?</Text>
+                          </PopoverBody>
+                          <PopoverFooter>
+                            <HStack width='full'>
+                              <Button width='full' variant='ghost' onClick={onClose}>
+                                Close
+                              </Button>
+                              <Button width='full' colorScheme='teal' onClick={() => handleDeleteExpense(expense.id)}>
+                                Delete
+                              </Button>
+                            </HStack>
+                          </PopoverFooter>
+                        </PopoverContent>
+                      </>
+                    )}
+                  </Popover>
                 </Td>
               </Tr>
             ))}

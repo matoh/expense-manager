@@ -19,5 +19,11 @@ export async function POST(request: Request) {
  * @param request
  */
 export async function DELETE(request: Request) {
-  return NextResponse.json({ status: 'success' });
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  const db = kyselyConnection();
+  const removedExpenseId = await db.deleteFrom('expense').where('id', '=', Number(id)).execute();
+
+  return NextResponse.json({ status: 'success', removedId: removedExpenseId });
 }

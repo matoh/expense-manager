@@ -35,5 +35,19 @@
     "eslint-config-next": "13.3.1",
     "kysely-codegen": "^0.10.0",
     "prettier": "^2.8.8"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "semi": true,
+    "tabWidth": 2,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
+    "trailingComma": "none",
+    "printWidth": 140
+  },
+  "eslintConfig": {
+    "extends": "next/core-web-vitals"
   }
 }

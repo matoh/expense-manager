@@ -13,10 +13,12 @@ import {
   ModalFooter,
   ModalHeader,
   Select,
-  Stack
+  Stack,
+  useToast
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
+import { createExpense, deleteExpense } from '../../api/ExpenseApi';
 
 interface CreateExpenseModalProps {
   isOpen: boolean;
@@ -30,17 +32,18 @@ export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseMod
     formState: { isSubmitting }
   } = useForm();
   const router = useRouter();
+  const notification = useToast();
 
-  async function createExpense(values: any) {
-    await fetch('/api/expense', {
-      method: 'POST',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      body: JSON.stringify(values)
+  const handleCreateExpense = (fieldValues: FieldValues) =>
+    createExpense({
+      values: fieldValues,
+      onSuccess: () => {
+        notification({ title: 'Successfully created expense' });
+        router.refresh();
+        onClose();
+      },
+      onError: (errorText) => notification({ title: errorText, status: 'error' })
     });
-
-    router.refresh();
-    onClose();
-  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
@@ -48,7 +51,7 @@ export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseMod
       <ModalContent bgColor='gray.50'>
         <ModalHeader>New Expense</ModalHeader>
         <ModalCloseButton />
-        <form onSubmit={handleSubmit(createExpense)}>
+        <form onSubmit={handleSubmit(handleCreateExpense)}>
           <ModalBody>
             <Card p='4'>
               <Stack spacing='4'>

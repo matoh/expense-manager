@@ -28,8 +28,6 @@ async function migrate(direction: 'up' | 'down' | 'latest') {
       migrationResultSet = await migrator.migrateToLatest();
   }
 
-  await db.destroy();
-
   return migrationResultSet;
 }
 
@@ -44,13 +42,22 @@ const migrations = {
         .addColumn('category', 'text', (col) => col.notNull())
         .addColumn('cost_sek', 'float4', (col) => col.notNull())
         .addColumn('cost_eur', 'float4', (col) => col.notNull())
+        .addColumn('date', 'date', (col) => col.notNull())
         .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`NOW()`))
         .execute();
     },
     async down(db: Kysely<any>): Promise<void> {
       await db.schema.dropTable('expense').execute();
     }
-  }
+  },
+  // '2023_05_27_add_date_field_to_expense_table': {
+  //   async up(db: Kysely<any>): Promise<void> {
+  //     await db.schema.alterTable('expense').addColumn('date', 'date' ).execute();
+  //   },
+  //   async down(db: Kysely<any>): Promise<void> {
+  //     await db.schema.alterTable('expense').dropColumn('date').execute();
+  //   }
+  // }
 };
 
 export { migrations, migrate };

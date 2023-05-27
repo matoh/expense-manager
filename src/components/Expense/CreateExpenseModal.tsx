@@ -29,6 +29,7 @@ export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseMod
   const {
     handleSubmit,
     register,
+    reset,
     formState: { isSubmitting }
   } = useForm();
   const router = useRouter();
@@ -41,6 +42,7 @@ export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseMod
         notification({ title: 'Successfully created expense' });
         router.refresh();
         onClose();
+        reset();
       },
       onError: (errorText) => notification({ title: errorText, status: 'error' })
     });
@@ -77,7 +79,7 @@ export default function CreateExpenseModal({ isOpen, onClose }: CreateExpenseMod
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel>Date</FormLabel>
-                  <Input type='date' isRequired {...register('created_at')} />
+                  <Input type='date' isRequired {...register('date')} />
                 </FormControl>
               </Stack>
             </Card>

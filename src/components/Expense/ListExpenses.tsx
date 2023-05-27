@@ -1,8 +1,9 @@
 'use client';
 
 import {
-  Box,
   Button,
+  Flex,
+  Heading,
   HStack,
   IconButton,
   Popover,
@@ -55,12 +56,13 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
 
   return (
     <>
-      <Box mb='2' textAlign='right'>
+      <Flex justifyContent='space-between' mb='4'>
+        <Heading size='lg'>Expenses</Heading>
         <Button colorScheme='teal' onClick={onOpenCreateExpense}>
           Create
         </Button>
         <CreateExpenseModal isOpen={isOpenCreateExpense} onClose={onCloseCreateExpense} />
-      </Box>
+      </Flex>
       <TableContainer bgColor='white' borderRadius='lg'>
         <Table>
           <Thead>
@@ -77,7 +79,7 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
               <Tr key={expense.id}>
                 <Td>{expense.merchant}</Td>
                 <Td>{expense.category}</Td>
-                <Td>{dayjs(expense.created_at).format('YYYY/MM/DD')}</Td>
+                <Td>{dayjs(expense.date).format('YYYY/MM/DD')}</Td>
                 <Td isNumeric>{expense.cost_sek}</Td>
                 <Td>
                   <IconButton
@@ -127,10 +129,7 @@ export default function ListExpenses({ expenses }: ListExpensesProps) {
           isOpen={isOpenEditExpense}
           onClose={() => {
             onCloseEditExpense();
-            // Delay unmounting modal for triggering close modal transition
-            setTimeout(() => {
-              setSelectedExpense(undefined);
-            }, 75);
+            setSelectedExpense(undefined);
           }}
         />
       )}

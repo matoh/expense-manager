@@ -16,11 +16,12 @@ import {
   Stack,
   useToast
 } from '@chakra-ui/react';
+import dayjs from 'dayjs';
 import { Selectable } from 'kysely';
 import { Expense } from 'kysely-codegen/dist/db';
 import { useRouter } from 'next/navigation';
 import { FieldValues, useForm } from 'react-hook-form';
-import { createExpense } from '../../api/ExpenseApi';
+import { updateExpense } from '../../api/ExpenseApi';
 
 interface EditExpenseModalProps {
   expense: Selectable<Expense>;
@@ -34,16 +35,21 @@ export default function EditExpenseModal({ expense, isOpen, onClose }: EditExpen
     register,
     formState: { isSubmitting }
   } = useForm({
-    defaultValues: expense
+    defaultValues: {
+      ...expense,
+      date: dayjs(expense.date).format('YYYY-MM-DD')
+    }
   });
+
   const router = useRouter();
   const notification = useToast();
 
-  const handleCreateExpense = (fieldValues: FieldValues) =>
-    createExpense({
+  const handleUpdateExpense = (fieldValues: FieldValues) =>
+    updateExpense({
+      expenseId: expense.id,
       values: fieldValues,
       onSuccess: () => {
-        notification({ title: 'Successfully created expense' });
+        notification({ title: 'Successfully updated expense' });
         router.refresh();
         onClose();
       },
@@ -56,7 +62,7 @@ export default function EditExpenseModal({ expense, isOpen, onClose }: EditExpen
       <ModalContent bgColor='gray.50'>
         <ModalHeader>New Expense</ModalHeader>
         <ModalCloseButton />
-        <form onSubmit={handleSubmit(handleCreateExpense)}>
+        <form onSubmit={handleSubmit(handleUpdateExpense)}>
           <ModalBody>
             <Card p='4'>
               <Stack spacing='4'>
@@ -82,7 +88,7 @@ export default function EditExpenseModal({ expense, isOpen, onClose }: EditExpen
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel>Date</FormLabel>
-                  <Input type='date' isRequired {...register('created_at')} />
+                  <Input type='date' isRequired {...register('date')} />
                 </FormControl>
               </Stack>
             </Card>
